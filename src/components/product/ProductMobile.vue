@@ -268,6 +268,14 @@ export default {
           this.$store.commit("INCREMENT_QUANTITY_CART", foundIndex);
         } else {
           this.$store.commit("ADD_PRODUCT_TO_CART_LIST", product);
+          //ADD_TO_CART;
+          //This event signifies that an item was added to a cart for purchase.
+          this.gtag("event", "add_to_cart", {
+            currency: "USD",
+            value: 7.77,
+            item_id: product.id,
+            item_name: product.name,
+          });
         }
       }
     },
