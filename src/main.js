@@ -9,15 +9,13 @@ import VuetifyConfirm from "vuetify-confirm";
 import { createProvider } from "./vue-apollo";
 import ZoomOnHover from "vue-zoom-on-hover";
 import Tawk from "vue-tawk";
-import './registerServiceWorker'
+import "./registerServiceWorker";
+import VueGtag from "vue-gtag"; //import gtag library for measuring analytics
 
-// this.$Tawk.$updateChatUser({
-//   name: "alehegn",
-//   email: "alehegntefera@gmail.com",
-//   hash: "",
-// });
-
-//this.$Tawk.$endChat()
+Vue.use(VueGtag, {
+  //instantiate gtag and setup google analytics measurement ID
+  config: { id: "UA-207369427-1" },
+});
 
 Vue.use(ZoomOnHover);
 Vue.config.productionTip = false;
