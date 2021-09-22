@@ -7,10 +7,12 @@
     <v-layout row wrap class="mx-10">
       <v-flex xs12 sm6 offset-sm3>
         <div class="my-5">
-          <h1 style="font-size:50px; font-color:#4DBA87;" >Sign Up</h1>
+          <h1 style="font-size:50px; font-color:#4DBA87;">Sign Up</h1>
         </div>
         <div>
-          <v-subheader dense>Please fill the form to create your Ashewa Account</v-subheader>
+          <v-subheader dense
+            >Please fill the form to create your Ashewa Account</v-subheader
+          >
         </div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form @submit.prevent="handleSubmit(submit)">
@@ -137,10 +139,7 @@
                 </ValidationProvider>
               </v-flex>
               <v-row>
-                <v-col
-                  cols="auto"
-                  class="mr-auto"
-                >
+                <v-col cols="auto" class="mr-auto">
                   <v-btn
                     :to="{ path: '/signup' }"
                     small
@@ -150,16 +149,21 @@
                   >
                 </v-col>
                 <v-col cols="auto">
-                  <SubmitButton buttonText="Signup" color="#4DBA87" class="white--text"/>
+                  <SubmitButton
+                    buttonText="Signup"
+                    color="#4DBA87"
+                    class="white--text"
+                  />
                 </v-col>
               </v-row>
               <v-btn
-                    :to="{ path: '/login' }"
-                    small
-                    text
-                    class="btnForgotPassword"
-                    >Already have an account? <span style="color:#4DBA87;">Login</span></v-btn
-                  >
+                :to="{ path: '/login' }"
+                small
+                text
+                class="btnForgotPassword"
+                >Already have an account?
+                <span style="color:#4DBA87;">Login</span></v-btn
+              >
             </v-layout>
           </form>
         </ValidationObserver>
@@ -217,6 +221,11 @@ export default {
   created() {
     if (this.$store.state.auth.isTokenSet) {
       router.push({ name: "landing" });
+      //SIGN_UP;
+      //This event indicates that a user has signed up for an account. Use this event to understand the different behaviors of logged in and logged out users.
+      this.gtag("event", "sign_up", {
+        method: "Ashewa Form Sign Up",
+      });
     }
   },
 };

@@ -48,6 +48,11 @@ export default {
   },
   created() {
     this.searchBy(this.$route.params.id);
+    //SEARCH PRODUCTS;
+    //This event indicates that a user has searchs for a specific product.
+    this.gtag("event", "search", {
+      method: "Google",
+    });
   },
   methods: {
     searchBy(id) {

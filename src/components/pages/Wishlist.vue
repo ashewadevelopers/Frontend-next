@@ -104,8 +104,10 @@ export default {
     },
     removeProduct(id) {
       this.$store.commit("REMOVE_PRODUCT_FROM_WISH_LIST", id);
+      //REMOVE_PRODUCT_FROM_WISH_LIST;
+      //This event signifies that an item was removed from a whishlist.
       this.gtag("event", "remove_from_whish_list", {
-        currency: "USD",
+        productId: id,
         value: 7.77,
       });
     },
