@@ -55,10 +55,7 @@
                 </ValidationProvider>
               </v-flex>
               <v-row>
-                <v-col
-                  cols="auto"
-                  class="mr-auto"
-                >
+                <v-col cols="auto" class="mr-auto">
                   <v-btn
                     :to="{ path: '/signup' }"
                     small
@@ -68,10 +65,13 @@
                   >
                 </v-col>
                 <v-col cols="auto">
-                  <SubmitButton class="white--text" buttonText="Login" color="#4DBA87" />
+                  <SubmitButton
+                    class="white--text"
+                    buttonText="Login"
+                    color="#4DBA87"
+                  />
                 </v-col>
               </v-row>
-              
             </v-layout>
           </form>
         </ValidationObserver>
@@ -104,6 +104,11 @@ export default {
       await this.userLogin({
         email: this.userName,
         password: this.password,
+      });
+      //LOGIN;
+      //Send this event to signify that a user has logged in.
+      this.gtag("event", "login", {
+        method: "Ashewa Form Login",
       });
     },
   },
