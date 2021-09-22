@@ -253,6 +253,11 @@ export default {
   methods: {
     userLogout() {
       this.$store.dispatch("userLogout");
+      //SIGN_OUT;
+      //This event indicates that a user has signed out for an account. Use this event to understand the different behaviors of logged in and logged out users.
+      this.gtag("event", "sign_out", {
+        method: "Google",
+      });
     },
     updateUser() {
       console.log("test");
