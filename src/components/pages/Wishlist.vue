@@ -104,6 +104,10 @@ export default {
     },
     removeProduct(id) {
       this.$store.commit("REMOVE_PRODUCT_FROM_WISH_LIST", id);
+      this.gtag("event", "remove_from_whish_list", {
+        currency: "USD",
+        value: 7.77,
+      });
     },
     inc(id) {
       var foundIndex = this.totalWishList.findIndex((x) => x.productId == id);

@@ -292,6 +292,12 @@ export default {
           this.$store.commit("INCREMENT_QUANTITY", foundIndex);
         } else {
           this.$store.commit("ADD_PRODUCT_TO_WISH_LIST", product);
+          //ADD_TO_WHISH_LIST;
+          //The event signifies that an item was added to a wishlist. Use this event to identify popular gift items in your app.
+          this.gtag("event", "add_to_wishlist", {
+            item_id: product.id,
+            item_name: product.name,
+          });
         }
       }
     },
