@@ -1358,8 +1358,19 @@ export default {
             (x) => x.productId == product.id
           );
           this.$store.commit("INCREMENT_QUANTITY_CART", foundIndex);
+          //INCREMENT_QUANTITY_CART;
+          //This event signifies that an item was removed from a cart.
+          this.gtag("event", "INCREMENT_QUANTITY_CART", {
+            productId: product.id,
+            value: 7.77,
+          });
         } else {
           this.$store.commit("ADD_PRODUCT_TO_CART_LIST", product);
+          //ADD_PRODUCT_TO_CART_LIST;
+          //This event signifies that an item was added to cart.
+          this.gtag("event", "ADD_PRODUCT_TO_CART_LIST", {
+            productId: product.id,
+          });
         }
       }
       this.$router.push({ path: "/cart" });
