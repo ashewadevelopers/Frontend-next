@@ -5,7 +5,7 @@
         <v-row justify="end">
           <v-col
             ><h1 class="mx-auto text-h4 mb-4" style="color:#43DB80">
-              Shopping Cart
+              Shopping  Cart 
             </h1></v-col
           >
         </v-row>
