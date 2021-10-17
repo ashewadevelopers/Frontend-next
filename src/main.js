@@ -12,6 +12,9 @@ import Tawk from "vue-tawk";
 import i18n from "@/plugins/i18n";
 import "./registerServiceWorker";
 
+import Notify from 'vue2-notify';
+import Notifications from 'vue-notification'
+import velocity      from 'velocity-animate'
 // this.$Tawk.$updateChatUser({
 //   name: "alehegn",
 //   email: "alehegntefera@gmail.com",
@@ -23,6 +26,8 @@ import "./registerServiceWorker";
 Vue.use(ZoomOnHover);
 Vue.config.productionTip = false;
 Vue.use(VuetifyConfirm, { vuetify });
+Vue.use(Notify)
+Vue.use(Notifications,{velocity})
 
 const app = new Vue({
   vuetify,

@@ -6,11 +6,11 @@
         Store</v-app-bar
       >
       <v-footer style="z-index:1000" class="pa-0" fixed>
-        <div style="width:100vw;height:92vh" class="mt-1">
+        <div v-if="messages" style="width:100vw;height:92vh" class="mt-1">
           <Chat
             :participants="participants"
             :myself="myself"
-            :messages="messageContent"
+            :messages="messages"
             :chat-title="chatTitle"
             :placeholder="placeholder"
             :colors="colors"
@@ -43,7 +43,13 @@
                 </p>
               </div>
             </template>
+                <v-list class="text-start" v-for="(message, i) in allChat" :key="i">
+            <v-list-item-content>
+            <v-list-item-title>{{ message.message }}</v-list-item-title>
+            </v-list-item-content>
+      </v-list>
           </Chat>
+
         </div>
       </v-footer>
     </div>
@@ -53,33 +59,145 @@
 <script>
 import { Chat } from "vue-quick-chat";
 import "vue-quick-chat/dist/vue-quick-chat.css";
+import gql from "graphql-tag";
+import { mapGetters } from "vuex";
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export default {
+  props: ['id'],
+  apollo: {
+  // Query with parameters 
+  messages: {
+    query: gql`query ($otherUsername: String!) {
+  messages:allChat(otherUsername: $otherUsername) {
+    content:message
+    participantId: id
+    timestamp: timestamp
+    myself:readStatus
+    user{
+      username
+    }
+    thread{
+      first{
+        id
+        username
+        profilePic
+      }
+      second{
+        id
+        username
+        profilePic
+      }
+    }
+  }
+}`,
+    variables() {
+      //console.log(this.user.username,"varrrrrrrrrrrrrrrrrrr",this.$router.history.current.params.id)
+      const OtherUsername = this.$router.history.current.params.id;
+      return {otherUsername: OtherUsername}
+    },
+  },
+
+},
   components: {
     Chat,
   },
+
   computed: {
+    ...mapGetters([
+      "isTokenSet",
+      "user",
+      "totalWishList",
+      "totalCartList",
+      "categories",
+      "sampleCategories",
+    ]),
+    
     participants() {
-      if (this.$store.state.message.message) {
+     //const OtherUsername = this.$router.history.current.params.id
+      //console.log(this.messages = this.$store.getters.messages,"-------------------")
+      //this.messages = this.$store.getters.messages
+      //console.log(this.$store.getters.messages,OtherUsername,"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{")
+      
+      /* if (this.$store.state.message.message) {
         return this.$store.state.message.message.participants;
       }
-      return {};
+      return {}; */
+      //const user = this.$store.getters.messages
+      //const users = this.user[0]
+
+      const users = this.messages && this.messages[0]
+      //console.log(users,"========",this.$apollo.queries.messages,this.user)
+      if( this.messages.length != 0 ){
+              return [
+                {
+                    name: users.thread.first.username,
+                    id: users.thread.first.id,
+                    profilePicture: users.thread.first.profilePic
+                },
+                {
+                    name: users.thread.second.username,
+                    id: users.thread.second.id,
+                    profilePicture: users.thread.second.profilePic
+                }
+            ]
+      }
+    else  {
+      return [
+              {
+                    name: "me",
+                    id: "users.thread.first.id",
+                    profilePicture: ""
+                },
+                {
+                    name: "him",
+                    id: this.user.id,
+                    profilePicture: ""
+                }
+            ]
+    }
+        
     },
     myself() {
-      if (this.$store.state.message.message) {
+      /* if (this.$store.state.message.message) {
         return this.$store.state.message.message.myself;
       }
-      return {};
-    },
+      return {}; */
+      //this.messages = this.$store.getters.messages
+
+      const users = this.messages && this.messages[0]
+      //console.log(users,"=======================",this.messages)
+      if( this.messages.length != 0){
+        return {
+                    name: users.thread.first.username,
+                    id: users.thread.first.id,
+                    profilePicture: users.thread.first.profilePic            
+            } 
+      }else{
+        return {
+                    name: this.user.username,
+                    id: this.user.id,
+                    profilePicture: ""            
+            }  
+      }
+            
+        },
     messageContent() {
-      if (this.$store.state.message.message) {
+/*  if (this.$store.state.message.message) {
         return this.$store.state.message.message.messageContent;
       }
-      return [];
+      return []; */
+      //this.messages = this.$store.getters.messages
+      return this.messages
     },
   },
+  
   data() {
     return {
+      allChat: [],
+      count: 1,
+      connection: null,
+      newmessages: [], 
       visible: true,
       chatTitle: "My chat title",
       placeholder: "send your message",
@@ -113,6 +231,7 @@ export default {
       },
       hideCloseButton: false,
       submitIconSize: 25,
+      submitImageIconSize: 25,
       closeButtonIconSize: "20px",
       asyncMode: false,
       toLoad: [],
@@ -132,7 +251,7 @@ export default {
       },
       timestampConfig: {
         format: "HH:mm",
-        relative: false,
+        relative: true,
       },
       // there are other options, you can check them here
       // https://soapbox.github.io/linkifyjs/docs/options.html
@@ -174,6 +293,48 @@ export default {
       },
     };
   },
+  created: function() {
+    //const OtherUsername = this.$router.history.current.params.id
+    //this.user = this.$store.getters.messages
+
+    const otherUsername = this.$router.history.current.params.id
+    console.log("Starting connection to WebSocket Server",otherUsername,this.user.id)
+    this.connection = new ReconnectingWebSocket('ws://'
+            + 'localhost:8000'
+            + '/ws'
+            + '/chat/'+this.user.id+'/'+otherUsername+'/')
+
+    this.connection.onmessage = (event) =>{
+      const data = JSON.parse(event.data)
+      //console.log(this.newmessages,"==========onmessage")
+      //console.log(data,"==========onmessage", data.username , this.user.username)
+      console.log(data,"===-------------======-----------===")
+      if(data.message === true || data.message === false){
+          console.log()
+      }
+      else if (data.username !== this.user.username ){
+          let chatFrame = {
+                    content: 'received messages',
+                    myself: false,
+                    participantId: 1,
+                    timestamp: {year: 2019, month: 3, day: 5, hour: 20, minute: 10, second: 3, millisecond: 123},
+                 
+                }
+           chatFrame.content = data.message
+           chatFrame.participantId = this.messages && this.messages[0].thread.second.id
+           this.messages.push(chatFrame)
+      }
+      //console.log(data.username,"=========",this.newmessages);
+    }
+
+    this.connection.onopen = function(event) {
+      //console.log(event)
+      console.log(event,"Successfully connected to the echo websocket server...")
+    }
+    const otherUsernames = this.$router.history.current.params.id
+    this.$store.dispatch("getmessages", otherUsernames);
+
+  },
   methods: {
     onType: function() {
       //here you can set any behavior
@@ -192,7 +353,15 @@ export default {
        * It's important to notice that even when your message wasn't send
        * yet to the server you have to add the message into the array
        */
-      console.log(message, "submit");
+      //console.log(this.$router.history.current.params.id,this.allChat)
+      //moment(YOUR_DATE_VARIABLE).format('YYYY-MM-DD HH:mm');
+      const otherUsername = this.$router.history.current.params.id
+      this.connection.send(JSON.stringify({
+                  'message': message.content ,
+                  'username': this.user.username,
+                  'timestamp': otherUsername,
+                  'room_name': "otherUsername",
+      }));
       this.messages.push(message);
 
       /*

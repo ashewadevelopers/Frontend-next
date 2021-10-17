@@ -14,7 +14,8 @@ const AUTH_TOKEN = "apollo-token";
 
 // Http endpoint
 const httpEndpoint =
-  process.env.VUE_APP_GRAPHQL_HTTP || "https://api.ashewa.com/graphql/";
+  process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:8000/graphql/" || "https://api.ashewa.com/graphql/";
+  //|| "http://localhost:8000/chat//graphql/" || "https://api.ashewa.com/graphql/" 
 
 const authLink = setContext(async (_, { headers }) => {
   const token = localStorage.getItem("apollo-token");

@@ -107,6 +107,7 @@
       </v-container>
     </v-main>
     <Footer />
+    <notifications group="notifications" position="bottom left" animation-type="velocity"/>
   </v-app>
 </template>
 
@@ -114,6 +115,10 @@
 import Toolbar from "@/components/core/Toolbar.vue";
 import Loading from "@/components/core/Loading.vue";
 import Footer from "@/components/core/Footer.vue";
+import ReconnectingWebSocket from 'reconnecting-websocket';
+import { mapGetters } from "vuex";
+
+
 
 export default {
   name: "Ashewa Market Place",
@@ -155,10 +160,41 @@ export default {
     Loading,
     Footer,
   },
-  computed: {},
+  computed: {
+    ...mapGetters([
+      "isTokenSet",
+      "user",
+    ])
+  },
+  
   created() {
+
+    console.log(this.user,"Appppppppppppppppppppp===-------------======-----------===")
+    const otherUsername = "0b169f7a-986d-4683-9a43-c2638672c643" 
+    this.connection = new ReconnectingWebSocket('ws://'
+            + 'localhost:8000'
+            + '/ws'
+            + '/chat/'+otherUsername+'/'+otherUsername+'/')
+
+    this.connection.onmessage = (event) =>{
+      const data = JSON.parse(event.data)
+      console.log(data,"Appppppppppppppppppppp===-------------======-----------===")
+      if(data.timestamp === this.user.id){
+        //this.$notify.success('This is success message',{ itemClass: 'alert col-6 alert-info', iconClass: 'fa fa-lg fa-handshake-o', visibility: 10000 })
+        this.$notify({
+        group: 'notifications',
+        title: 'New message',
+        text: 'message from '+ data.username,
+        type: 'success',
+        duration: 5000,
+      });
+      }
+      
+      //createToast('Wow', 'easy')
+    }
     this.parentCats();
     this.getAllProducts();
+
   },
   methods: {
     addSubscriber() {
@@ -176,6 +212,7 @@ export default {
         this.$store.dispatch("parentCats");
       }
     },
+
   },
 };
 </script>
