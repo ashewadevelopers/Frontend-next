@@ -281,6 +281,10 @@ const actions = {
       domain
       storeName
       id
+      user{
+        id
+        username
+      }
       followerSet {
         user {
           id

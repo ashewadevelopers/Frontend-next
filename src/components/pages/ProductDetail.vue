@@ -1233,8 +1233,8 @@ export default {
             profilePicture: "",
           },
         });
-
-        this.$router.push({ path: `/messages/${1}` });
+        this.$router.push({ path: `/messages/${this.product.vendor.user.id}` ,
+                            params: { id: this.product.vendor.user.id }});//
       }
     },
     inquire(data) {
@@ -1331,7 +1331,8 @@ export default {
             },
           ],
         });
-        this.$router.push({ path: `/messages/${1}` });
+        this.$router.push({  path: `/messages/${this.product.vendor.user.id}` ,
+                            params: { id: this.product.vendor.user.id } });
       }
     },
     async getProduct() {
