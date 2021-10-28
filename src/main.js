@@ -12,9 +12,15 @@ import Tawk from "vue-tawk";
 import i18n from "@/plugins/i18n";
 import "./registerServiceWorker";
 
-import Notify from 'vue2-notify';
-import Notifications from 'vue-notification'
-import velocity      from 'velocity-animate'
+import Notify from "vue2-notify";
+import Notifications from "vue-notification";
+import velocity from "velocity-animate";
+import VueGtag from "vue-gtag";
+
+Vue.use(VueGtag, {
+  config: { id: "UA-207369427-1" },
+});
+
 // this.$Tawk.$updateChatUser({
 //   name: "alehegn",
 //   email: "alehegntefera@gmail.com",
@@ -26,8 +32,8 @@ import velocity      from 'velocity-animate'
 Vue.use(ZoomOnHover);
 Vue.config.productionTip = false;
 Vue.use(VuetifyConfirm, { vuetify });
-Vue.use(Notify)
-Vue.use(Notifications,{velocity})
+Vue.use(Notify);
+Vue.use(Notifications, { velocity });
 
 const app = new Vue({
   vuetify,
