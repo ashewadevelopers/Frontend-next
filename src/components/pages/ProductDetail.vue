@@ -1375,9 +1375,9 @@ export default {
           this.$store.commit("INCREMENT_QUANTITY_CART", foundIndex);
         } else {
           this.$store.dispatch("addToCart", product);
-          this.$gtag.event("Update User", {
-            event_category: "User Profile Updated",
-            event_label: "Number of Users Updated their profile",
+          this.$gtag.event("Add To Cart @Delivery", {
+            event_category: "Add To Cart From Delivery",
+            event_label: "Number of Users added item to Cart on Delivery Page",
           });
         }
       }
