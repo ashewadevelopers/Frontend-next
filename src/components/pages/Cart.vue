@@ -431,10 +431,18 @@ export default {
     inc(id) {
       var foundIndex = this.totalCartList.findIndex((x) => x.productId == id);
       this.$store.commit("INCREMENT_QUANTITY_CART", foundIndex);
+      this.$gtag.event("INCREMENT_QUANTITY_CART @Delivery", {
+        event_category: "INCREMENT_QUANTITY_CART From Delivery",
+        event_label: "INCREMENT_QUANTITY_CART on Delivery Page",
+      });
     },
     dec(id) {
       var foundIndex = this.totalCartList.findIndex((x) => x.productId == id);
       this.$store.commit("DECREMENT_QUANTITY_CART", foundIndex);
+      this.$gtag.event("DECCREMENT_QUANTITY_CART @Delivery", {
+        event_category: "DECCREMENT_QUANTITY_CART From Delivery",
+        event_label: "DECCREMENT_QUANTITY_CART on Delivery Page",
+      });
     },
   },
   computed: {

@@ -55,10 +55,7 @@
                 </ValidationProvider>
               </v-flex>
               <v-row>
-                <v-col
-                  cols="auto"
-                  class="mr-auto"
-                >
+                <v-col cols="auto" class="mr-auto">
                   <v-btn
                     :to="{ path: '/signup' }"
                     small
@@ -68,10 +65,13 @@
                   >
                 </v-col>
                 <v-col cols="auto">
-                  <SubmitButton class="white--text" buttonText="Login" color="#4DBA87" />
+                  <SubmitButton
+                    class="white--text"
+                    buttonText="Login"
+                    color="#4DBA87"
+                  />
                 </v-col>
               </v-row>
-              
             </v-layout>
           </form>
         </ValidationObserver>
@@ -105,6 +105,10 @@ export default {
         email: this.userName,
         password: this.password,
       });
+      //  this.$gtag.event("DECCREMENT_QUANTITY_CART @Delivery", {
+      //       event_category: "DECCREMENT_QUANTITY_CART From Delivery",
+      //       event_label: "DECCREMENT_QUANTITY_CART on Delivery Page",
+      //     });
     },
   },
   created() {
