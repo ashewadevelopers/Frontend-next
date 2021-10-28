@@ -368,6 +368,10 @@ export default {
     },
     async getDelivery() {
       await this.$store.dispatch("getDelivery");
+      this.$gtag.event("Get Delivery", {
+        event_category: "Get Product Delivery",
+        event_label: "Number of Get Deliveries",
+      });
     },
 
     finalizeCheckout() {
