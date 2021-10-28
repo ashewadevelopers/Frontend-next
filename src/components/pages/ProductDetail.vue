@@ -1233,8 +1233,10 @@ export default {
             profilePicture: "",
           },
         });
-        this.$router.push({ path: `/messages/${this.product.vendor.user.id}` ,
-                            params: { id: this.product.vendor.user.id }});//
+        this.$router.push({
+          path: `/messages/${this.product.vendor.user.id}`,
+          params: { id: this.product.vendor.user.id },
+        }); //
       }
     },
     inquire(data) {
@@ -1331,8 +1333,10 @@ export default {
             },
           ],
         });
-        this.$router.push({  path: `/messages/${this.product.vendor.user.id}` ,
-                            params: { id: this.product.vendor.user.id } });
+        this.$router.push({
+          path: `/messages/${this.product.vendor.user.id}`,
+          params: { id: this.product.vendor.user.id },
+        });
       }
     },
     async getProduct() {
@@ -1371,6 +1375,10 @@ export default {
           this.$store.commit("INCREMENT_QUANTITY_CART", foundIndex);
         } else {
           this.$store.dispatch("addToCart", product);
+          this.$gtag.event("Update User", {
+            event_category: "User Profile Updated",
+            event_label: "Number of Users Updated their profile",
+          });
         }
       }
       this.$router.push({ path: "/cart" });

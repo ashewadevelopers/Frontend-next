@@ -262,7 +262,10 @@ export default {
         email: this.email,
         id: this.user.id,
       });
-
+      this.$gtag.event("Update User Profile", {
+        event_category: "User Profile Updated",
+        event_label: "Number of Users Updated their profile",
+      });
       this.$store.dispatch("updateUser", {
         firstName: this.firstName,
         lastName: this.lastName,
