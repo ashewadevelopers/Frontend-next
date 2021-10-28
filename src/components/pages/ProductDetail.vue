@@ -1373,6 +1373,10 @@ export default {
             (x) => x.productId == product.id
           );
           this.$store.commit("INCREMENT_QUANTITY_CART", foundIndex);
+          this.$gtag.event("INCREMENT_QUANTITY_CART @Delivery", {
+            event_category: "INCREMENT_QUANTITY_CART From Delivery",
+            event_label: "INCREMENT_QUANTITY_CART on Delivery Page",
+          });
         } else {
           this.$store.dispatch("addToCart", product);
           this.$gtag.event("Add To Cart @Delivery", {
@@ -1386,6 +1390,10 @@ export default {
     decrement() {
       this.quantity =
         this.quantity > 1 ? parseInt(this.quantity, 10) - 1 : this.quantity;
+      this.$gtag.event("DECCREMENT_QUANTITY_CART @Delivery", {
+        event_category: "DECCREMENT_QUANTITY_CART From Delivery",
+        event_label: "DECCREMENT_QUANTITY_CART on Delivery Page",
+      });
     },
     toggle(n) {
       this.index = n;
