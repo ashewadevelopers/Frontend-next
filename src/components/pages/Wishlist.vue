@@ -98,9 +98,19 @@ export default {
   },
   methods: {
     getColor(status) {
-      if (status == "Delivered") return "green";
-      else if (status == "On going") return "orange";
-      else return "red";
+      if (status == "Delivered") {
+        this.$gtag.event("Product Delivered", {
+          event_category: "Product Delivered Successfully",
+          event_label: "Number of Product Delivered Successfully",
+        });
+        return "green";
+      } else if (status == "Product Delivery on going") {
+        this.$gtag.event("Product Delivery Ongoing", {
+          event_category: "Product Delivery Ongoing",
+          event_label: "Number of Ongoing Product for Delivery",
+        });
+        return "orange";
+      } else return "red";
     },
     removeProduct(id) {
       this.$store.commit("REMOVE_PRODUCT_FROM_WISH_LIST", id);
