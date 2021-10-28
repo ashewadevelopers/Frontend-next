@@ -218,6 +218,10 @@ export default {
   methods: {
     addSubscriber() {
       this.$store.dispatch("addSubscriber", this.email);
+      this.$gtag.event("Subscription Added", {
+        event_category: "Get Subscriptions",
+        event_label: "No of Subscriptions",
+      });
     },
   },
 };
