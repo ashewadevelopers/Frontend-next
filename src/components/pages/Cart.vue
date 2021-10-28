@@ -427,6 +427,10 @@ export default {
     },
     clear() {
       this.$store.commit("CLEAR_CART");
+      this.$gtag.event("Clear Cart @Delivery", {
+        event_category: "Clear cart From Delivery",
+        event_label: "No of Users Clear Cart on Delivery Page",
+      });
     },
     inc(id) {
       var foundIndex = this.totalCartList.findIndex((x) => x.productId == id);
